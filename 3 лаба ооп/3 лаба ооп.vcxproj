@@ -139,9 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bill.h" />
     <ClInclude Include="Time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bill.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>

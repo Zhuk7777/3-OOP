@@ -28,7 +28,7 @@ public:
 	
 	void minusSec(int s);
 
-	int minusResSek(const Time& obj);
+	int minusResSec(const Time& obj);
 	Time operator -(const Time& obj);
 
 	Time operator+(const Time& obj);
@@ -37,6 +37,7 @@ public:
 	bool operator>(const Time& obj);
 	bool operator==(const Time& obj);
 	Time& operator=(const Time& obj);
+	Time& operator=(const std::string str);
 
 	friend std::ostream& operator<< (std::ostream& out, Time& obj);
 	friend std::istream& operator>> (std::istream& in, Time& obj);

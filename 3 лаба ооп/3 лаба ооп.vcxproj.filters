@@ -18,12 +18,18 @@
     <ClInclude Include="Time.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Bill.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Time.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Bill.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

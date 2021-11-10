@@ -22,6 +22,7 @@ Time::Time(std::string str)
 Time::Time(int _second)
 {
 	hour = _second / 3600;
+	hour %= 24;
 	_second %= 3600;
 	minute = _second / 60;
 	_second %= 60;
@@ -119,15 +120,23 @@ void Time::addSec(int s)
 		if (minute >= 60) {
 			hour += minute / 60;
 			minute %= 60;
+			hour %= 24;
 		}
 	}
 }
 
 void Time::minusSec(int s)
 {
+	if (hour < s/3600) {
+		if ((hour + 24 - s / 3600) < (s / 3600 - hour))
+			hour += 24;
+	}
+
 	int sec = toSec();
+
 	sec -= s;
 	hour = sec / 3600;
+	hour %= 24;
 	sec %= 3600;
 	minute = sec / 60;
 	sec %= 60;
@@ -135,24 +144,32 @@ void Time::minusSec(int s)
 
 }
 
-int Time::minusResSek(const Time& obj)
+int Time::minusResSec(const Time& obj)
 {
-	int sec = second + 60 * (minute)+60 * 60 * (hour);
-	int  secObj = obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour);
-	if (sec - secObj >= 0)
-		return sec - secObj;
-	else return 0;
+	Time newObj(hour, minute, second);
+
+	if (newObj.hour < obj.hour) {
+		if ((newObj.hour + 24 - obj.hour) < (obj.hour - newObj.hour))
+			newObj.hour += 24;
+	}
+	int secObj = obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour);
+	int secNew = newObj.toSec();
+
+	return abs(secNew - secObj);
 }
 
 Time Time::operator-(const Time& obj)
 {
-	int result;
-	int sec = second + 60 * (minute)+60 * 60 * (hour);
-	int  secObj = obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour);
-	if (sec - secObj >= 0)
-		result = sec - secObj;
-	else result = 0;
-	return Time(result);
+	Time newObj(hour, minute, second);
+
+	if (newObj.hour < obj.hour) {
+		if ((newObj.hour + 24 - obj.hour) < (obj.hour - newObj.hour))
+			newObj.hour += 24;
+	}
+	int secObj= obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour);
+	int secNew = newObj.toSec();
+
+	return Time(abs(secNew - secObj));
 }
 
 Time Time::operator+(const Time& obj)
@@ -185,6 +202,24 @@ Time& Time::operator=(const Time& obj)
 	hour = obj.hour;
 	minute = obj.minute;
 	second = obj.second;
+	return *this;
+}
+
+Time& Time::operator=(const std::string str)
+{
+	if (str == "") {
+		hour = 0;
+		minute = 0;
+		second = 0;
+	}
+	else {
+		int i = 0;
+		hour = stoi(str.substr(i, 2));
+		i += 3;
+		minute = stoi(str.substr(i, 2));
+		i += 3;
+		second = stoi(str.substr(i, 2));
+	}
 	return *this;
 }
 
