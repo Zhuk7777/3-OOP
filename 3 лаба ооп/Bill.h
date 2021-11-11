@@ -1,6 +1,7 @@
 #pragma once
 #include<string>
 #include"Time.h"
+#include<iostream>
 class Bill
 {
 	std::string surname;
@@ -33,4 +34,6 @@ public:
 	int talkTimeMinute();
 
 	std::string toString();
+
+	friend std::ostream& operator<< (std::ostream& out, Bill& obj);
 };

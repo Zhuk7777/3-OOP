@@ -110,3 +110,9 @@ std::string Bill::toString()
 
 	return  std::to_string(intpart) + " руб " + std::to_string(fractpart) + " коп"; 
 }
+
+std::ostream& operator<<(std::ostream& out, Bill& obj)
+{
+	out << obj.surname << " " << obj.phone << "\nТариф - " << obj.rate << "\nCкидка - " << obj.discount << "%\nРазговор начался в " << obj.beg << "\nРазговор закончился в " << obj.end << "\nСумма к оплате " << obj.toString() << "\n";
+	return out;
+}
