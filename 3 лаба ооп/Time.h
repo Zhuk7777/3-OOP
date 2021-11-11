@@ -12,6 +12,8 @@ public:
 	Time(double realTime);
 	Time();
 
+	Time(const Time& obj);
+
 	void setHour(int h);
 	void setMin(int m);
 	void setSec(int s);

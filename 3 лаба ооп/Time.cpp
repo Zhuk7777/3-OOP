@@ -47,6 +47,13 @@ Time::Time()
 	second = 0;
 }
 
+Time::Time(const Time& obj)
+{
+	hour = obj.hour;
+	minute = obj.minute;
+	second = obj.second;
+}
+
 void Time::setHour(int h)
 {
 	hour = h;
@@ -127,19 +134,21 @@ void Time::addSec(int s)
 
 void Time::minusSec(int s)
 {
-	if (hour < s/3600) {
-		if ((hour + 24 - s / 3600) < (s / 3600 - hour))
-			hour += 24;
-	}
-
 	int sec = toSec();
 
+	if (sec < s)
+		hour += 24;
+
+	sec = toSec();
 	sec -= s;
+
 	hour = sec / 3600;
 	hour %= 24;
 	sec %= 3600;
+
 	minute = sec / 60;
 	sec %= 60;
+
 	second = sec;
 
 }
@@ -148,28 +157,26 @@ int Time::minusResSec(const Time& obj)
 {
 	Time newObj(hour, minute, second);
 
-	if (newObj.hour < obj.hour) {
-		if ((newObj.hour + 24 - obj.hour) < (obj.hour - newObj.hour))
-			newObj.hour += 24;
-	}
+	if (newObj < obj)
+		newObj.hour += 24;
+	
 	int secObj = obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour);
 	int secNew = newObj.toSec();
 
-	return abs(secNew - secObj);
+	return secNew - secObj;
 }
 
 Time Time::operator-(const Time& obj)
 {
 	Time newObj(hour, minute, second);
 
-	if (newObj.hour < obj.hour) {
-		if ((newObj.hour + 24 - obj.hour) < (obj.hour - newObj.hour))
-			newObj.hour += 24;
-	}
+	if (newObj < obj)
+		newObj.hour += 24;
+	
 	int secObj= obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour);
 	int secNew = newObj.toSec();
 
-	return Time(abs(secNew - secObj));
+	return Time(secNew - secObj);
 }
 
 Time Time::operator+(const Time& obj)
@@ -183,12 +190,12 @@ Time Time::operator+(const Time& obj)
 
 bool Time::operator<(const Time& obj)
 {
-	return second + 60 * (minute)+60 * 60 * (hour) < (obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour));
+	return ((hour < obj.hour) || (hour == obj.hour && minute < obj.minute) || (hour == obj.hour && minute == obj.minute && second < obj.second));
 }
 
 bool Time::operator>(const Time& obj)
 {
-	return second + 60 * (minute)+60 * 60 * (hour) > (obj.second + 60 * (obj.minute) + 60 * 60 * (obj.hour));
+	return ((hour > obj.hour) || (hour == obj.hour && minute > obj.minute) || (hour == obj.hour && minute == obj.minute && second > obj.second));
 }
 
 bool Time::operator==(const Time& obj)
