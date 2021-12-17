@@ -1,6 +1,6 @@
 #include "Bill.h"
 
-Bill::Bill(std::string s, std::string p, double r, int d, Time b, Time e, double pa)
+Bill::Bill(std::string s, std::string p, double r, int d, Time b, Time e)
 {
 	surname = s;
 	phone = p;
@@ -8,14 +8,29 @@ Bill::Bill(std::string s, std::string p, double r, int d, Time b, Time e, double
 	discount = d;
 	beg = b;
 	end = e;
-	pay = pa;
+	pay = 0;
 }
 
 Bill::Bill()
 {
+	surname = "";
+	phone = "";
+	beg = "00:00:00";
+	end = "00:00:00";
 	rate = 0;
 	discount = 0;
 	pay = 0;
+}
+
+Bill::Bill(const Bill& obj)
+{
+	surname = obj.surname;
+	phone = obj.phone;
+	rate = obj.rate;
+	discount = obj.discount;
+	beg = obj.beg;
+	end = obj.end;
+	pay = obj.pay;
 }
 
 void Bill::setSurname(std::string s)
@@ -46,11 +61,6 @@ void Bill::setBeg(std::string b)
 void Bill::setEnd(std::string e)
 {
 	end = e;
-}
-
-void Bill::setPay(double pa)
-{
-	pay = pa;
 }
 
 std::string Bill::getSurname()
@@ -85,6 +95,9 @@ Time Bill::getEnd()
 
 double Bill::getPay()
 {
+	pay = rate * talkTimeMinute();
+	pay = round(pay);
+	pay -= pay * discount / 100;
 	return pay;
 }
 

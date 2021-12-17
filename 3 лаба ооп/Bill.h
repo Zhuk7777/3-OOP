@@ -12,8 +12,10 @@ class Bill
 	Time end;
 	double pay;
 public:
-	Bill(std::string s, std::string p, double r, int d, Time b, Time e, double pa);
+	Bill(std::string s, std::string p, double r, int d, Time b, Time e);
 	Bill();
+
+	Bill(const Bill& obj);
 
 	void setSurname(std::string s);
 	void setPhone(std::string p);
@@ -21,7 +23,6 @@ public:
 	void setDiscount(int d);
 	void setBeg(std::string b);
 	void setEnd(std::string e);
-	void setPay(double pa);
 
 	std::string getSurname();
 	std::string getPhone();
